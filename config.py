@@ -1,8 +1,7 @@
-from dataclasses import dataclass
+from pydantic import BaseModel
 from typing import Dict
 
-@dataclass
-class Config:
+class Config(BaseModel):
 
     data_path: str = "data/data.txt"
     tokenizer_dir: str = "artifacts/tokenizer"
