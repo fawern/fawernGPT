@@ -13,6 +13,8 @@ class Tokenizer:
         vocab: Vocab,
         merges: List[Tuple[str, str]],
     ):
+        self.vocab = vocab
+        self.merges = merges
 
 
     @classmethod
@@ -95,7 +97,7 @@ class Tokenizer:
         self.vocab.save(path)
 
         with open(os.path.join(path, "merges.json"), "w", encoding="utf-8") as f:
-            json.dump(self.merges, f, ensure_ascii=False
+            json.dump(self.merges, f, ensure_ascii=False)
     
     @classmethod
     def load(
