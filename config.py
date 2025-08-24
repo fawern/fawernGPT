@@ -37,3 +37,4 @@ class Config(BaseModel):
     eval_every: int = 100
     save_dir: str = "artifacts/checkpoints"
     device: str = "cuda"
+    seed: int = 42
