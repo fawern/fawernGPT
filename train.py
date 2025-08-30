@@ -31,16 +31,16 @@ def main():
     ensure_dir(config.save_dir)
 
     tok = Tokenizer.train(
-        iter_text(config.data_path, lowercase=config.lowercase),
+        iter_text(config.data_path, lower_case=config.lower_case),
         vocab_size=config.vocab_size,
         min_pair_freq=config.min_pair_freq,
-        lowercase=config.lowercase,
+        lower_case=config.lower_case,
     )
     tok.save(config.tokenizer_dir)
 
     all_ids: List[int] = []
-    for line in iter_text(config.data_path, lowercase=config.lowercase):
-        all_ids.extend(tok.encode(line, add_bos=False, add_eos=True, lowercase=config.lowercase))
+    for line in iter_text(config.data_path, lower_case=config.lower_case):
+        all_ids.extend(tok.encode(line, add_bos=False, add_eos=True, lower_case=config.lower_case))
     
     print("Dataset loading")
     dataset = LMDataset(all_ids, block_size=config.block_size)

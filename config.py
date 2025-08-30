@@ -31,7 +31,7 @@ class Config(BaseModel):
     # ------------------------------------------------------------
 
     batch_size: int = 32
-    max_steps: int = 500
+    max_steps: int = 3000
     lr: float = 3e-4
     warmup_steps: int = 50
     eval_every: int = 100

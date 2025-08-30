@@ -1,10 +1,11 @@
 from collections import Counter, defaultdict
 from config import Config
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Generator
 
 
 def _word_to_symbols(word: str) -> List[str]:
-    return list(word) + [Config.ENCODING_SPECIALS["END_OF_WORD"]]
+    config = Config()
+    return list(word) + [config.ENCODING_SPECIALS["END_OF_WORD"]]
 
 
 def _get_stats(words: Dict[Tuple[str, ...], int]) -> Counter:
@@ -49,11 +50,11 @@ def _merge_pair(
 
 def learn_bpe(
     text_iter: Generator[str, None, None], 
-    vocab_size: int = Config.vocab_size, 
-    min_pair_freq: int = Config.min_pair_freq, 
+    vocab_size: int = 1000, 
+    min_pair_freq: int = 2, 
 ) -> Tuple[List[Tuple[str, str]], List[str]]:
 
-    wrod_freq = Counter()
+    word_freq = Counter()
     for line in text_iter:
         for word in line.strip().split():
             word_freq[word] += 1

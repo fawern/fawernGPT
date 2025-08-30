@@ -1,1 +1,6 @@
 venv/
+__pycache__/
+sagemaker_launch_training.py
+s3-access.json
+trust.json
+.env

@@ -43,7 +43,7 @@ class CausalSelfAttention(nn.Module):
         att = self.dropout(att)
 
         x = att @ v
-        y = y.transpose(1, 2).contiguous().view(B, T, C)
-        y = self.proj(y)
+        x = x.transpose(1, 2).contiguous().view(B, T, C)
+        x = self.proj(x)
 
-        return self.dropout(y)
+        return self.dropout(x)

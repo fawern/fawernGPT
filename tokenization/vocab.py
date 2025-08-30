@@ -11,8 +11,10 @@ class Vocab:
         tokens: List[str],
         specials: Dict[str, str] = None
     ):
-        specials: Dict[str, str] = specials or Config.SPECIAL_TOKENS
-        self.specials : List[str] = list(specials.values())
+        config = Config()
+        specials_dict: Dict[str, str] = specials or config.SPECIAL_TOKENS
+        self.specials_dict = specials_dict
+        self.specials : List[str] = list(specials_dict.values())
 
         base: List[str] = []
 
@@ -27,10 +29,10 @@ class Vocab:
         self.token_to_id: Dict[str, int] = {t: i for i, t in enumerate(base)}
         self.id_to_token: Dict[int, str] = {i: t for i, t in enumerate(base)}
 
-        self.pad_id: int = self.token_to_id[self.specials["PAD"]]
-        self.bos_id: int = self.token_to_id[self.specials["BOS"]]
-        self.eos_id: int = self.token_to_id[self.specials["EOS"]]
-        self.unk_id: int = self.token_to_id[self.specials["UNK"]]
+        self.pad_id: int = self.token_to_id[self.specials_dict["PAD"]]
+        self.bos_id: int = self.token_to_id[self.specials_dict["BOS"]]
+        self.eos_id: int = self.token_to_id[self.specials_dict["EOS"]]
+        self.unk_id: int = self.token_to_id[self.specials_dict["UNK"]]
 
     
     def encode_tokens(
@@ -44,7 +46,7 @@ class Vocab:
         self,
         ids: List[int]
     ) -> List[str]:
-        return [self.id_to_token.get(i, self.specials["UNK"]) for i in ids]
+        return [self.id_to_token.get(i, self.specials_dict["UNK"]) for i in ids]
     
     def save(
         self,

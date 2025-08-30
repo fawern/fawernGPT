@@ -21,17 +21,18 @@ class Tokenizer:
     def train(
         cls, 
         text_iter: Generator[str, None, None],
-        vocab_size: int = Config.vocab_size,
-        min_pair_freq: int = Config.min_pair_freq,
-        lower_case: bool = Config.lower_case,
+        vocab_size: int = 1000,
+        min_pair_freq: int = 2,
+        lower_case: bool = True,
     ) -> "Tokenizer":
 
         merges, symbols = learn_bpe(
             text_iter, vocab_size=vocab_size, min_pair_freq=min_pair_freq
         )
 
+        config = Config()
         vocab_tokens = symbols
-        vocab = Vocab(tokens=vocab_tokens, specials=Config.SPECIAL_TOKENS)
+        vocab = Vocab(tokens=vocab_tokens, specials=config.SPECIAL_TOKENS)
         return cls(vocab, merges)
         
     
@@ -39,25 +40,26 @@ class Tokenizer:
         self, 
         text: str,
         add_bos: bool = True,
-        lower_case: bool = Config.lower_case,
+        add_eos: bool = True,
+        lower_case: bool = True,
     ) -> List[int]:
 
         if lower_case:
             text = text.lower()
 
-            ids: List[int] = []
+        ids: List[int] = []
 
-            if add_bos:
-                ids.append(self.vocab.bos_id)
-            
-            for word in text.strip().split():
-                pieces = apply_bpe_to_word(word, self.merges)
-                ids.extend(self.vocab.encode_tokens(pieces))
-            
-            if add_eos:
-                ids.append(self.vocab.eos_id)
-            
-            return ids
+        if add_bos:
+            ids.append(self.vocab.bos_id)
+        
+        for word in text.strip().split():
+            pieces = apply_bpe_to_word(word, self.merges)
+            ids.extend(self.vocab.encode_tokens(pieces))
+        
+        if add_eos:
+            ids.append(self.vocab.eos_id)
+        
+        return ids
     
     def decode(
         self, 
@@ -69,14 +71,15 @@ class Tokenizer:
         words: List[str] = []
         cur: List[str] = []
 
+        config = Config()
         for token in tokens:
             if token in (
-                Config.SPECIAL_TOKENS["BOS"], Config.SPECIAL_TOKENS["EOS"], Config.SPECIAL_TOKENS["PAD"], Config.SPECIAL_TOKENS["UNK"],
+                config.SPECIAL_TOKENS["BOS"], config.SPECIAL_TOKENS["EOS"], config.SPECIAL_TOKENS["PAD"], config.SPECIAL_TOKENS["UNK"],
             ):
                 continue
 
-            if token.endswith(Config.ENCODING_SPECIALS["END_OF_WORD"]):
-                cur.append(token.replace(Config.ENCODING_SPECIALS["END_OF_WORD"], ""))
+            if token.endswith(config.ENCODING_SPECIALS["END_OF_WORD"]):
+                cur.append(token.replace(config.ENCODING_SPECIALS["END_OF_WORD"], ""))
                 words.append("".join(cur))
                 cur = []
             

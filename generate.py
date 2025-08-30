@@ -23,11 +23,11 @@ def main():
     _ = load_latest(config.save_dir, model, optimizer=None)
     model.eval()
 
-    prompt = "Once upon a time"
+    prompt = "Hatta pek alelade, hiçbir hususiyeti olmayan, her gün etrafımızda yüzlercesini"
     x = torch.tensor([tokenizer.encode(prompt, add_bos=False, add_eos=False)], dtype=torch.long).to(device)
 
     with torch.no_grad():
-        y = model.generate(x, max_new_tokens=50, temperature=1.0, top_k=50)
+        y = model.generate(x, max_new_tokens=90, temperature=1.0, top_k=50)
     
     txt = tokenizer.decode(y[0].tolist())
     print(f"PROMPT: {prompt}")

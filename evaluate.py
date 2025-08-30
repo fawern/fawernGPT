@@ -19,8 +19,8 @@ def main():
     tokenizer = Tokenizer.load(config.tokenizer_dir)
 
     ids = []
-    for line in iter_text(config.data_path, lowercase=config.lowercase):
-        ids.extend(tokenizer.encode(line, add_bos=False, add_eos=True, lowercase=config.lowercase))
+    for line in iter_text(config.data_path, lower_case=config.lower_case):
+        ids.extend(tokenizer.encode(line, add_bos=False, add_eos=True, lower_case=config.lower_case))
     
     dataset = LMDataset(ids, block_size=config.block_size)
     dataloader = DataLoader(dataset, batch_size=config.batch_size, shuffle=False, drop_last=True)

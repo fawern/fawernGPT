@@ -11,7 +11,7 @@ def iter_text(
 
     Args:
         path: Path to the file or directory to iterate over.
-        lower_case: Whether to lowercase the text.
+        lower_case: Whether to lower_case the text.
 
     Returns:
         A generator of strings, one for each line in the file or directory.

@@ -36,7 +36,7 @@ class FawernGPT(nn.Module):
             ]
         )
 
-        self.ln = self.LayerNorm(d_model)
+        self.ln = nn.LayerNorm(d_model)
         self.head = nn.Linear(d_model, vocab_size, bias=False)
 
     
@@ -71,7 +71,7 @@ class FawernGPT(nn.Module):
     ):
         for _ in range(max_new_tokens):
 
-            idx_cond = ids[:, -self.block_size]
+            idx_cond = idx[:, -self.block_size:]
             logits, _ = self.forward(idx_cond)
             logits = logits[:, -1, :] / max(temperature, 1e-6)
 
